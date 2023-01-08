@@ -15,15 +15,17 @@ class MusicTile extends StatelessWidget {
     return ListTile(
       title: Text(
         songModel.displayNameWOExt,
-        style:
-            const TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+        style: const TextStyle(
+            fontWeight: FontWeight.bold,
+            color: Color.fromARGB(255, 31, 30, 30)),
         overflow: TextOverflow.ellipsis,
       ),
       subtitle: Text(
         songModel.additionalSongInfo,
-        style: TextStyle(color: Colors.white),
+        style: TextStyle(color: Color.fromARGB(255, 31, 31, 31)),
       ),
-      trailing: const Icon(Icons.more_horiz, color: Colors.white),
+      trailing:
+          const Icon(Icons.more_horiz, color: Color.fromARGB(255, 39, 39, 39)),
       leading: QueryArtworkWidget(
           id: songModel.id,
           type: ArtworkType.AUDIO,

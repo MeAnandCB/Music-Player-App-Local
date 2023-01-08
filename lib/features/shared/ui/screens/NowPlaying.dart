@@ -4,8 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_background/just_audio_background.dart';
 import 'package:on_audio_query/on_audio_query.dart';
+import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:provider/provider.dart';
 import '../../../../provider/song_model_provider.dart';
+import 'AllSongs.dart';
+import 'mainWindow.dart';
 //import 'musicplayer.dart';
 
 class NowPlaying extends StatefulWidget {
@@ -126,138 +129,112 @@ class NowPlayingState extends State<NowPlaying> {
     return SafeArea(
       child: Scaffold(
         body: Container(
-          decoration: BoxDecoration(
-              image: DecorationImage(
-                  image: AssetImage('assets/nowplayingbackground.jpg'),
-                  fit: BoxFit.cover)),
           height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
-          padding: const EdgeInsets.all(10.0),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            // ignore: prefer_const_literals_to_create_immutables
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                // ignore: prefer_const_literals_to_create_immutables
-                children: [
-                  IconButton(
-                    onPressed: () {
-                      popBack();
-                    },
-                    icon: const Icon(
-                      Icons.arrow_back_ios,
-                      color: Colors.red,
-                    ),
-                  ),
-                  Row(
-                    // ignore: prefer_const_literals_to_create_immutables
-                    children: [
-                      Text(
-                        'Hi Anand',
-                        style: TextStyle(color: Colors.white, fontSize: 15),
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      CircleAvatar(
-                        radius: 25,
-                        backgroundColor: Colors.green,
-                        child: CircleAvatar(
-                          backgroundImage:
-                              AssetImage('assets/circleavatarbg.jfif'),
-                          radius: 22,
-                        ),
-                      ),
-                      SizedBox(
-                        width: 20,
-                      )
-                    ],
-                  ),
-                ],
+              const SizedBox(
+                height: 25,
               ),
-              SizedBox(
-                height: 20,
-              ),
-              GestureDetector(
-                onTap: () {
-                  popBack();
-                },
-                child: Text(
-                  widget.songModelList[currentIndex].displayNameWOExt,
-
-                  // textAlign: TextAlign.center,
-                  style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                      fontSize: 20.0,
-                      overflow: TextOverflow.ellipsis),
-                  maxLines: 1,
-                ),
-              ),
-              SizedBox(
-                height: 4,
-              ),
-              Text(
-                "Now Playing",
-                style: TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w300,
-                    color: Colors.white),
-              ),
-              SizedBox(
-                height: 40,
-              ),
-              Center(
-                child: Stack(
-                  // ignore: prefer_const_literals_to_create_immutables
+              Padding(
+                padding: const EdgeInsets.only(left: 20, right: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    CircleAvatar(
-                      radius: 158,
-                      backgroundColor: Colors.white10,
-                      child: CircleAvatar(
-                        radius: 148,
-                        backgroundColor: Colors.white12,
-                        child: CircleAvatar(
-                          radius: 134,
-                          child: CircleAvatar(
-                            radius: 129,
-                            backgroundImage: AssetImage('assets/musicbg.webp'),
+                    InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => AllSongs(),
                           ),
+                        );
+                      },
+                      child: CircleAvatar(
+                        backgroundColor: Color(0xffdcdcdc),
+                        radius: 25,
+                        child: Icon(
+                          Icons.keyboard_arrow_left_rounded,
+                          size: 35,
+                          color: Color(0xff434343),
                         ),
+                      ),
+                    ),
+                    Text('Now playing'),
+                    CircleAvatar(
+                      backgroundColor: Color(0xffdcdcdc),
+                      radius: 25,
+                      child: Icon(
+                        Icons.menu,
+                        size: 20,
+                        color: Color(0xff434343),
                       ),
                     ),
                   ],
                 ),
               ),
+              Text(
+                'Music Player',
+                style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+              ),
               SizedBox(
-                height: 40,
+                height: 10,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                // ignore: prefer_const_literals_to_create_immutables
-                children: [
-                  CircleAvatar(child: Icon(Icons.favorite)),
-                  SizedBox(
-                    width: 10,
+              SizedBox(
+                height: 70,
+              ),
+              SizedBox(
+                height: 300,
+                width: 300,
+                child: Stack(
+                  children: [
+                    Center(
+                      child: CircleAvatar(
+                        radius: 115,
+                        backgroundImage: NetworkImage(
+                            'https://th.bing.com/th/id/R.26b4d77edba3719089bd61010708cbf6?rik=cGj9%2bmjk%2b5NKHg&riu=http%3a%2f%2fcyberbargins.net%2favatar2.jpg&ehk=wVOsFvG53JSGWsU5iysfeNG696r0nSetxIZRIYOWHa0%3d&risl=&pid=ImgRaw&r=0'),
+                      ),
+                    ),
+                    CircularPercentIndicator(
+                      circularStrokeCap: CircularStrokeCap.round,
+                      radius: 150,
+                      lineWidth: 10,
+                      percent: _position.inSeconds / _duration.inSeconds,
+                      progressColor: Color(0xff434343),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                child: Text(
+                  widget.songModelList[currentIndex].displayNameWOExt,
+                  style: TextStyle(
+                    fontSize: 25,
+                    fontWeight: FontWeight.bold,
                   ),
-                  CircleAvatar(
-                      child: GestureDetector(child: Icon(Icons.more_horiz)))
-                ], // music bar
+                  overflow: TextOverflow.fade,
+                  maxLines: 1,
+                ),
               ),
-              const SizedBox(
-                height: 15.0,
+              SizedBox(
+                height: 10,
               ),
-              const SizedBox(
-                height: 15.0,
+              Text(
+                'Album Titile',
+                style: TextStyle(fontWeight: FontWeight.bold),
               ),
               Slider(
                 min: 0.0,
                 value: _position.inSeconds.toDouble(),
                 max: _duration.inSeconds.toDouble() + 1.0,
-                activeColor: Color.fromARGB(255, 0, 88, 183),
+                activeColor: Color(0xff04686a),
                 inactiveColor: Color.fromARGB(255, 255, 255, 255),
-                thumbColor: Color.fromARGB(255, 255, 0, 0),
+                thumbColor: Color.fromARGB(255, 77, 208, 206),
                 onChanged: (value) {
                   setState(
                     () {
@@ -286,86 +263,112 @@ class NowPlayingState extends State<NowPlaying> {
               ),
               Spacer(),
               Container(
-                height: 140,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  color: Colors.white.withOpacity(.1),
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(30),
+                      topRight: Radius.circular(30)),
+                  color: Color(0xffe7e7e9),
                 ),
+                height: 150,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  // ignore: prefer_const_literals_to_create_immutables
                   children: [
-                    Row(
-                      children: [
-                        SizedBox(
-                          width: 30,
-                        ),
-                        Icon(Icons.shuffle, size: 30.0, color: Colors.white),
-                        SizedBox(
-                          width: 20,
-                        ),
-                        GestureDetector(
-                          onDoubleTap: () {
-                            widget.audioPlayer.seekToNext();
-                            if (widget.audioPlayer.hasPrevious) {
-                              widget.audioPlayer.seekToPrevious();
-                            }
-                          },
-                          child: Icon(Icons.skip_previous,
-                              size: 50.0, color: Colors.white),
-                        ),
-                      ],
+                    SizedBox(
+                      width: 30,
+                    ),
+                    Icon(
+                      Icons.dnd_forwardslash_rounded,
+                      size: 30,
                     ),
                     GestureDetector(
                       onTap: () {
-                        setState(() {
-                          if (_isPlaying) {
-                            widget.audioPlayer.pause();
-                          } else {
-                            if (_position >= _duration) {
-                              seekToSeconds(0);
-                            } else {
-                              widget.audioPlayer.play();
-                            }
-                          }
-                          _isPlaying = !_isPlaying;
-                        });
+                        widget.audioPlayer.seekToNext();
+                        if (widget.audioPlayer.hasPrevious) {
+                          widget.audioPlayer.seekToPrevious();
+                        }
                       },
                       child: Icon(
-                          _isPlaying
-                              ? Icons.motion_photos_paused
-                              : Icons.play_circle_outline_outlined,
-                          size: 90.0,
-                          color: Colors.white),
-                      // color: Theme.of(context).primaryColor,
+                        Icons.skip_previous,
+                        size: 55,
+                      ),
                     ),
-                    Row(
-                      children: [
-                        InkWell(
-                          onDoubleTap: () {
-                            widget.audioPlayer.seekToNext();
-                          },
-                          child: const Icon(Icons.skip_next,
-                              size: 50.0, color: Colors.white),
-                        ),
-                        SizedBox(
-                          width: 20,
-                        ),
-                        Icon(Icons.replay_outlined,
-                            size: 30.0, color: Colors.white),
-                        SizedBox(
-                          width: 30,
-                        ),
-                      ],
+                    Container(
+                      height: 70,
+                      width: 70,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                            colors: const [
+                              Color(0xff04686a),
+                              Color.fromARGB(255, 77, 208, 206),
+                            ],
+                            begin: Alignment.bottomLeft,
+                            end: Alignment.topRight),
+                        borderRadius: BorderRadius.circular(40),
+                      ),
+                      child: InkWell(
+                        onTap: () {
+                          setState(() {
+                            if (_isPlaying) {
+                              widget.audioPlayer.pause();
+                            } else {
+                              if (_position >= _duration) {
+                                seekToSeconds(0);
+                              } else {
+                                widget.audioPlayer.play();
+                              }
+                            }
+                            _isPlaying = !_isPlaying;
+                          });
+                        },
+                        child: Icon(
+                            _isPlaying
+                                ? Icons.motion_photos_paused
+                                : Icons.play_circle_outline_outlined,
+                            size: 50.0,
+                            color: Colors.white),
+                        // color: Theme.of(context).primaryColor,
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        widget.audioPlayer.seekToNext();
+                        if (widget.audioPlayer.hasPrevious) {
+                          widget.audioPlayer.seekToPrevious();
+                        }
+                      },
+                      child: Icon(
+                        Icons.skip_next,
+                        size: 55,
+                      ),
+                    ),
+                    Icon(
+                      Icons.favorite_border,
+                      size: 30,
+                    ),
+                    SizedBox(
+                      width: 30,
                     ),
                   ],
                 ),
-              ),
-              SizedBox(
-                height: 30,
               )
             ],
           ),
         ),
+        bottomNavigationBar: BottomNavigationBar(
+            elevation: 0,
+            type: BottomNavigationBarType.fixed,
+            selectedItemColor: Color(0xff434343),
+            unselectedItemColor: Color(0xff434343),
+            backgroundColor: Color(0xffe7e7e9),
+            items: const [
+              BottomNavigationBarItem(icon: Icon(Icons.repeat), label: ''),
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.add_box_outlined), label: ''),
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.graphic_eq_outlined), label: ''),
+              BottomNavigationBarItem(icon: Icon(Icons.shuffle), label: ''),
+            ]),
       ),
     );
   }
